@@ -1,7 +1,11 @@
 package es.cic.curso.ejerc005;
 
+import jakarta.validation.constraints.Size;
+
 public class Saludo {
     private Long id;
+    
+    @Size(max=10)
     private String dniCifNie;
     private boolean escuchado;
 

@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
@@ -89,16 +90,28 @@ class SaludoControllerIntregrationTest {
 					.content(mensaje)
 			)
 				.andDo(print())
-				.andExpect(status().isOk())
+				.andExpect(status().isCreated())
 				.andExpect(content().string("1"))
 				.andReturn();
 
 		// mvcResult.
 	}
 
+
 	@Test
-	@Disabled
 	void testActualizar() throws Exception {
-		fail("No implmentado aun");
+		// ESTO NO String mensaje = "{\"id\":1,\"dniCifNie\":\"dssdfsdf\",\"escuchado\":false,\"mensaje\":\"Hola\"}";
+		
+		Saludo  saludo = new Saludo(3l, "dni", false, "Adios");
+
+		String mensaje = objectMapper.writeValueAsString(saludo);
+		
+		mvc.perform(
+				put("/api/saludo")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(mensaje)
+			)
+				.andDo(print())
+				.andExpect(status().isOk());
 	}
 }
