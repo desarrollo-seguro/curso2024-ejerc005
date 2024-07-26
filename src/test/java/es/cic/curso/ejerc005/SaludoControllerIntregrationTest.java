@@ -94,8 +94,27 @@ class SaludoControllerIntregrationTest {
 				.andExpect(content().string("1"))
 				.andReturn();
 
-		// mvcResult.
 	}
+
+
+	@Test
+	void testCrearDniNoValido() throws Exception {
+		Saludo  saludo = new Saludo(null, "dnidecuyonombrenoquieroacordarme", false, "Adios");
+
+		String mensaje = objectMapper.writeValueAsString(saludo);
+		
+		mvc.perform(
+				post("/api/saludo")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(mensaje)
+			)
+				.andDo(print())
+				.andExpect(status().isBadRequest())
+;
+
+	}
+
+
 
 
 	@Test

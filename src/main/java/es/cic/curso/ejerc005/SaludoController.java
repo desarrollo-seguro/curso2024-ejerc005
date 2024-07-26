@@ -15,20 +15,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/saludo")
 public class SaludoController {
     @Autowired
-    private SaludosService saludosService;
+    private SaludoService saludoService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public long crear(@RequestBody Saludo saludo) {
+    public long crear(@RequestBody @Valid Saludo saludo) {
         if (saludo.getId() != null) {
-            
+            throw new RuntimeException("Me lo has tratado de colar");     
         }
-        
-        return 1l;
+        return saludoService.crear(saludo);
     }
 
     @GetMapping("/{id}")
