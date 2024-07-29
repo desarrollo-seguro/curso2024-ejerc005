@@ -36,27 +36,29 @@ public class SaludoController {
 
     @GetMapping("/{id}")
     public Saludo leer(@PathVariable("id") long id) {
-        Saludo saludo = new Saludo(id,  "dssdfsdf", false, "Hola");
+        Saludo saludo = saludoService.leer(id);
+
+        // TODO Controlar me devuelve nulo para un 404
+
         return saludo;
     }
 
     @GetMapping
     public List<Saludo> listar() {
-        // TODO Cambiar esto pero ya
-        List<Saludo> respuesta = new ArrayList<>();
-        Saludo saludo = new Saludo(1l,  "dssdfsdf", false, "Hola");
-        
-        respuesta.add(saludo);
-
-        return respuesta;
+        return saludoService.listar();
     }
 
     @PutMapping
     public void actualizar(@RequestBody Saludo saludo) {
+        if (saludo.getId() == null) {
+            throw new RuntimeException("Me lo has tratado de colar");     
+        }    
+        saludoService.actualizar(saludo);
     }
 
     @DeleteMapping("/{id}")
     public void borrar(@PathVariable("id") long id) {
+        saludoService.borrar(id);
     }
 
 }
