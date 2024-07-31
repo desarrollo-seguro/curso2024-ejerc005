@@ -56,7 +56,7 @@ class SaludoControllerIntregrationTest {
 
 	@AfterEach
 	public void tearDown() {
-		entityManager.remove(saludo);
+		//entityManager.remove(saludo);
 	}
 
 
