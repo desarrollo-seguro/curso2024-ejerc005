@@ -1,5 +1,7 @@
 package es.cic.curso.ejerc005.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,6 +19,7 @@ public class Documento {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "expediente_id")
+    @JsonIgnore
     private Expediente expediente;
 
     public Long getId() {
