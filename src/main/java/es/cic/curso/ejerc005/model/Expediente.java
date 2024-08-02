@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Expediente {
@@ -16,6 +17,7 @@ public class Expediente {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Size(max = 10)
     private String nombre;
 
     @OneToMany(mappedBy = "expediente", 

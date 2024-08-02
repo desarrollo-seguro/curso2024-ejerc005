@@ -25,7 +25,7 @@ public class ExpedienteService {
 
     @Transactional(readOnly = true) 
     public Expediente leer(long id) {
-        return expedienteRepository.findById(id).orElseThrow(() -> new RuntimeException(String.format("No lo encontré el %d chaval@", id)));
+        return expedienteRepository.findById(id).orElseThrow(() -> new NoEncontradoException(String.format("No lo encontré el %d chaval@", id), id));
     }
 
     public void actualizar(Expediente expediente) {

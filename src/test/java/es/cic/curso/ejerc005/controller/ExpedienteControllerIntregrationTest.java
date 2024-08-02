@@ -1,4 +1,4 @@
-package es.cic.curso.ejerc005.service;
+package es.cic.curso.ejerc005.controller;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -34,7 +34,8 @@ import jakarta.persistence.PersistenceContext;
 
 
 @SpringBootTest
-class ExpedienteServiceIntregrationTest {
+@AutoConfigureMockMvc
+class ExpedienteControllerIntregrationTest {
 
 	@Autowired
 	private ExpedienteRepository expedienteRepository;
@@ -43,7 +44,7 @@ class ExpedienteServiceIntregrationTest {
 	private EntityManager em;
 
 	@Autowired
-	private ExpedienteService expedienteService;
+	private MockMvc mockMvc;
 
 	@Autowired
 	private ObjectMapper objectMapper;
@@ -71,29 +72,26 @@ class ExpedienteServiceIntregrationTest {
 
 
 	@Test
-	void testListar() throws Exception {
-		List<Expediente> res = expedienteService.listar();
+	void testLeer() throws Exception {
+		MvcResult mvcResult = mockMvc.perform(get("/api/expediente/{1}", expediente.getId())
+			.contentType(MediaType.APPLICATION_JSON))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.id").value(expediente.getId()))
+			.andReturn();
 
-		assertTrue(res.size() >= 1, "No existe al menos el registro que yo quería");
-	}
+		String body = mvcResult.getResponse().getContentAsString();
+		Expediente expedienteResultado = objectMapper.readValue(body, Expediente.class);
 
-
-
-	@Test
-	void testActualizarCambioNombreBorraDocumento() throws Exception {
-		Expediente expedienteLeido = new Expediente();
-		expedienteLeido.setId(expediente.getId());
-		expedienteLeido.setNombre("Ninguno");
-
-		expedienteService.actualizar(expedienteLeido);
+		assertTrue(expedienteResultado.getDocumentos().size() >= 1);
 	}
 
 	@Test
-	void testActualizarActualizarDocumento() throws Exception {
-		Expediente expedienteLeido = new Expediente();
-		expedienteLeido.setId(expediente.getId());
-		expedienteLeido.setNombre("Ninguno");
-
-		expedienteService.actualizar(expedienteLeido);
+	void testLeer_no_encontrado() throws Exception {
+		mockMvc.perform(get("/api/expediente/{1}", expediente.getId()*5)
+			.contentType(MediaType.APPLICATION_JSON))
+			.andDo(print())
+			.andExpect(status().isNotFound());
 	}
+
 }
